@@ -10,11 +10,13 @@ class HomeController < ApplicationController
       error_code = -4
     end
     if error_code == 0
+      print ('O\n')
       @user.logincount += 1
       @user.save
       render json: {:user_name => @user.username,
                     :login_count => @user.logincount}
     else
+      print ('X\n')
       render json: {:error_code => error_code, :user_name => params[:username]}
     end
   end
@@ -39,9 +41,11 @@ class HomeController < ApplicationController
     end
 
     if error_code == 0
+      print ('O\n')
       render json: {:user_name => @user.username,
                     :login_count => @user.logincount}
     else
+      print ('X\n')
       render json: {:error_code => error_code}
     end
   end
