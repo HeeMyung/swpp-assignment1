@@ -1,2 +1,22 @@
-<h1>Assignment1</h1>
-<p>이제 여기에 로그인 기능을 만들겁니다</p>
+<div>
+<% if params[:error] %>
+<%= params[:error] %>
+<% end %>
+</div>
+<div>
+<%= form_for :userinfo, :url => {:controller => "home", :action => "create"}, html: {id:'userinfo'} do |f| %>
+  <p>
+    <%= f.label :username %>
+    <%= f.text_field :username %>
+  </p>
+  <p>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+    <%= f.check_box :show %>
+  </p>
+<% end %>
+<button id="login">Login</button>
+<button id="adduser">AddUser</button>
+<p>
+<label id="error_msg"></label>
+</div>

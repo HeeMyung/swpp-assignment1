@@ -1,2 +1,8 @@
-<h1>Home#login</h1>
-<p>Find me in app/views/home/login.html.erb</p>
+<div>
+Welcome <%= @user.username %>
+You have logged in <%= @user.logincount %> times.
+<div>
+<p>
+<%= form_for :logout, :url => {:controller => "home", :action => "logout"} do |f| %>
+  <%= f.submit "Logout", name: 'logout' %>
+<% end %>
