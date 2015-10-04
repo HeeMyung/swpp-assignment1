@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'loggedon' => 'home#loggedon'
   post 'login' => 'home#login'
   post 'signin' => 'home#create'
-  post 'clearData' => 'home#logout'
+  post 'clearData' => 'home#clear_all'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

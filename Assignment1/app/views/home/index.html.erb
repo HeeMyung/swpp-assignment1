@@ -1,22 +1,23 @@
-<div>
-<% if params[:error] %>
-<%= params[:error] %>
-<% end %>
+<div id="message_box">
 </div>
-<div>
-<%= form_for :userinfo, :url => {:controller => "home", :action => "create"}, html: {id:'userinfo'} do |f| %>
+<div id="login_form">
   <p>
-    <%= f.label :username %>
-    <%= f.text_field :username %>
+    <label>Username</label>
+    <input type="text" id="username"/>
   </p>
   <p>
-    <%= f.label :password %>
-    <%= f.password_field :password %>
-    <%= f.check_box :show %>
+    <label>Password</label>
+    <input type="password" id="password"/>
+    <input type="checkbox" id="showpass"/>
   </p>
-<% end %>
-<button id="login">Login</button>
-<button id="adduser">AddUser</button>
-<p>
-<label id="error_msg"></label>
+  <button id="login">Login</button>
+  <button id="adduser">AddUser</button>
+  <p>
+    <label id="error_msg"></label>
+  </p>
+</div>
+<div id="logout_form">
+  <p>
+    <button id="logout">Logout</button>
+  </p>
 </div>

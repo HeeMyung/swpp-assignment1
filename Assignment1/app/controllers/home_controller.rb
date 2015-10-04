@@ -3,60 +3,51 @@ class HomeController < ApplicationController
   def index
   end
 
-  def logout
-    redirect_to(:action => :index)
-  end
-
-  def loggedon
-    @user = User.find_by(username: params[:username])
-    render 'login'
-  end
-
   def login
-    @user = User.find_by(username: params[:userinfo][:username])
-    @error = nil
-    if @user == nil || @user.password != params[:userinfo][:password]
-      @error = "Invalid username and password combination. Please try again."
+    @user = User.find_by(username: params[:username])
+    error_code = 0
+    if @user == nil || @user.password != params[:password]
+      error_code = -4
     end
-    if @error == nil
+    if error_code == 0
       @user.logincount += 1
       @user.save
-      redirect_to ({:action => :loggedon,
-                    :username => @user.username})
+      render json: {:user_name => @user.username,
+                    :login_count => @user.logincount}
     else
-       redirect_to ({:action => :index,
-                     :error => @error})
+      render json: {:error_code => error_code, :user_name => params[:username]}
     end
   end
 
   def create
-    @user = User.find_by(username: params[:userinfo][:username])
-    errorMsg = nil
+    @user = User.find_by(username: params[:username])
+    error_code = 0
     if @user != nil
-      errorMsg = 'This user name already exists. Please try again.'
+      error_code = -3
     else
-      if params[:userinfo][:username].length < 5 || params[:userinfo][:username].length > 20
-        errorMsg = 'The user name should be 5~20 characters long. Please try again.'
-      elsif params[:userinfo][:password].length < 8 || params[:userinfo][:password].length > 20
-        errorMsg = 'The password should be 8~20 characters long. Please try again.'
+      if params[:username].length < 5 || params[:username].length > 20
+        error_code = -1
+      elsif params[:password].length < 8 || params[:password].length > 20
+        error_code = -2
       else
-        @user = User.new(user_params)
+        @user = User.new
+        @user.username = params[:username]
+        @user.password = params[:password]
         @user.logincount = 1
         @user.save
       end
     end
 
-    if errorMsg == nil
-      redirect_to(:action => :loggedon, 
-                  :username => @user.username)
+    if error_code == 0
+      render json: {:user_name => @user.username,
+                    :login_count => @user.logincount}
     else
-      redirect_to(:action => :index,
-                  :error => errorMsg)
+      render json: {:error_code => error_code}
     end
   end
 
-  private
-    def user_params
-      params.require(:userinfo).permit(:username, :password)
-    end
+  def clear_all
+    User.destroy_all
+    render plain: 'OK'
+  end
 end
